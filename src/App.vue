@@ -1,28 +1,62 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div v-if="auth" class="layout">
+      <div class="header"></div>
+      <div class="sidebar">
+        <navigation-bar />
+      </div>
+      <div class="content">
+        <router-view></router-view>
+      </div>
+    </div>
+    <div v-else>
+      <login-page />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
+import LoginPage from "@/views/LoginPage";
+import NavigationBar from "@/components/NavigationBar";
 export default {
   name: "app",
   components: {
-    HelloWorld
+    NavigationBar,
+    LoginPage
+  },
+  data() {
+    return {
+      auth: true
+    };
   }
 };
 </script>
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.layout {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template: 80px 1fr /5em 1fr;
+  grid-template-areas: "sidebar header" "sidebar content";
+}
+.header {
+  grid-area: header;
+  background-color: #fff;
+}
+.sidebar {
+  grid-area: sidebar;
+}
+.content {
+  grid-area: content;
+  background-color: #f3f3f4;
 }
 </style>
