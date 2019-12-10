@@ -1,4 +1,8 @@
-# piperuntest
+# piperun frontend developer test
 
-* Utilizado o yarn para gerenciar os pacotes
-* Para executar: yarn run serve
+a simple app to interact with the api of piperun
+
+scripts:
+
+- npm install: to add all dependencies 
+- npm run serve: to start project
