@@ -1,44 +1,22 @@
 <template>
   <div id="app">
-    <div v-if="auth" class="layout">
-      <div class="header"></div>
-      <div class="sidebar">
-        <navigation-bar />
-      </div>
-      <div class="content">
-        <router-view></router-view>
-      </div>
+    <div class="layout">
+      <sidebar class="sidebar"></sidebar>
+      <router-view class="content"></router-view>
     </div>
-    <div v-else>
-      <login-page />
-    </div>
+    <router-view />
   </div>
 </template>
-
 <script>
-import LoginPage from "@/views/LoginPage";
-import NavigationBar from "@/components/NavigationBar";
+import Sidebar from "@/components/Sidebar"
 export default {
-  name: "app",
-  components: {
-    NavigationBar,
-    LoginPage
-  },
-  data() {
-    return {
-      auth: true
-    };
+  name: "App",
+  components:{
+    sidebar: Sidebar
   }
 };
 </script>
-
-<style>
-#app {
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
+<style scoped>
 .layout {
   height: 100vh;
   width: 100%;
@@ -46,17 +24,14 @@ export default {
   padding: 0;
   display: grid;
   grid-template: 80px 1fr /5em 1fr;
-  grid-template-areas: "sidebar header" "sidebar content";
-}
-.header {
-  grid-area: header;
-  background-color: #fff;
+  grid-template-areas: "sidebar content" "sidebar content";
 }
 .sidebar {
   grid-area: sidebar;
 }
 .content {
   grid-area: content;
+  padding: 45px;
   background-color: #f3f3f4;
 }
 </style>
