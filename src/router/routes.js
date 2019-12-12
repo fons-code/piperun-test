@@ -3,13 +3,13 @@ import Router from "vue-router";
 import axios from "../config/axios";
 import VueAxios from "vue-axios";
 
-import Login from "@/views/Login";
+//import Login from "@/views/Login";
 import Home from "@/views/Home";
 import CreateActivities from "@/components/CreateActivities";
-import Pipelines from '@/views/Pipelines'
-import Persons from '@/views/Persons'
-import Companies from '@/views/Companies'
-import Dashboard from '@/views/Dashboard'
+import Pipelines from "@/views/Pipelines";
+import Persons from "@/views/Persons";
+import Companies from "@/views/Companies";
+import Dashboard from "@/views/Dashboard";
 
 Vue.use(Router);
 Vue.use(VueAxios, axios);
@@ -17,13 +17,8 @@ Vue.use(VueAxios, axios);
 export default new Router({
   routes: [
     {
-      path: "/",
-      name: "Login",
-      component: Login
-    },
-    {
       path: "/home",
-      redirect: '/activities',
+      redirect: "/activities",
       name: "Home",
       component: Home
     },

@@ -1,18 +1,32 @@
 <template>
   <div id="app">
-    <div class="layout">
-      <sidebar class="sidebar"></sidebar>
-      <router-view class="content"></router-view>
+    <div v-if="auth" class="layout">
+      <sidebar  v-on:logout="changeAuth" class="sidebar"></sidebar>
+      <router-view class="content"/>
     </div>
-    <router-view />
+    <div v-else>
+      <login v-on:auth-success="changeAuth"/>
+    </div>
   </div>
 </template>
 <script>
-import Sidebar from "@/components/Sidebar"
+import Login from '@/views/Login'
+import Sidebar from "@/components/Sidebar";
 export default {
   name: "App",
-  components:{
-    sidebar: Sidebar
+  components: {
+    sidebar: Sidebar,
+    login : Login
+  },
+  data() {
+    return {
+      auth: false
+    };
+  },
+  methods: {
+    changeAuth(){
+      this.auth = !this.auth
+    }
   }
 };
 </script>

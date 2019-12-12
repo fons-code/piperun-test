@@ -33,7 +33,7 @@
             class="btn btn-lg btn-primary btn-block"
             type="submit"
             @click.prevent.stop="authentication()"
-          >Logar</button>
+          >Enter</button>
         </form>
       </div>
       <div class="col-sm"></div>
@@ -58,7 +58,9 @@ export default {
     async authentication() {
       if (this.email != " " && this.password != " ") {
        Authentication.login(this.email, this.password);
-        if (localStorage.token) this.$router.push({ name: "Home" });
+        if (localStorage.token) 
+        {this.$router.push({ name: "Home" });
+        this.$emit('auth-success')}
       }
     }
   }
