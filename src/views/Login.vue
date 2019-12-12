@@ -50,7 +50,7 @@ export default {
     return {
       email: "",
       password: "",
-      token: " "
+      token: ""
     };
   },
   filters: {},
