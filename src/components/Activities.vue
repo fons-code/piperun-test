@@ -155,9 +155,9 @@ export default {
 </script>
 
 <style scoped>
-a{
+a {
   text-decoration: none;
-  color: white !important; 
+  color: white !important;
   margin: 0 12px;
 }
 </style>
