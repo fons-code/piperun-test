@@ -17,16 +17,18 @@
           </div>
           <div class="form-group">
             <label>Type</label>
-            <input type="text" v-model="activity.activity_type" class="form-control" />
+            <input type="number" v-model="activity.activity_type" class="form-control" />
           </div>
           <div class="form-group">
             <label>Status</label>
-            <input type="text" v-model="activity.status" class="form-control" />
+            <input type="number" v-model="activity.status" class="form-control" />
           </div>
           <div class="form-group">
             <div class="btn-group float-right">
-              <button class="btn btn-secundary mr-3" type="button"><router-link to="/home">Back</router-link></button>
-             <button class="btn btn-primary float-right" type="submit">Create</button>
+              <button class="btn btn-secundary mr-3" type="button">
+                <router-link to="/home">Back</router-link>
+              </button>
+              <button class="btn btn-primary float-right" type="submit">Create</button>
             </div>
           </div>
         </form>
@@ -39,6 +41,7 @@
 
 <script>
 import ActivitiesService from "../services/ActivitiesService";
+import alert from '@/components/alert';
 export default {
   props: {
     id: {
@@ -55,24 +58,28 @@ export default {
         owner_id: "",
         account_id: "",
         activity_type: ""
-      }
+      },
     };
   },
   filters: {},
   methods: {
     createActivity() {
       if (!this.$route.params.id) {
-        ActivitiesService.create(this.activity).then(res => {
-          this.$router.push({ name: "Home" });
-        });
+          ActivitiesService.create(this.activity).then(() => {
+          this.$router.push({ name: "/home" });
+        })
+        
       } else {
         ActivitiesService.updateActivity(
           this.$route.params.id,
           this.activity
-        ).then(res => {
-          this.$router.push({ name: "Home" });
+        ).then(() => {
+          this.$router.push({ name: "/home" });
         });
       }
+    },
+    validateForm(){
+      return true;
     }
   },
   mounted() {

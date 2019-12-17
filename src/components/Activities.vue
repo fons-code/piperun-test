@@ -82,13 +82,12 @@ export default {
   components: {
     DatePicker
   },
-  filters: {},
   name: "Activities",
   data() {
     return {
       activitiesList: [],
       date: "",
-      range: " ",
+      range: "",
       lang: {}
     };
   },
