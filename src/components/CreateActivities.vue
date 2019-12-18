@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <form v-on:submit="createActivity">
+        <form v-on:submit="validateForm">
           <h4 v-if="!$route.params.id" class="text-center mb-3">Create</h4>
           <h4 v-else class="text-center mb-3">Edit</h4>
 
@@ -11,6 +11,7 @@
             <label>Title</label>
             <input type="text" v-model="activity.title" class="form-control" />
           </div>
+          <alert v-if="error" msg='you can only use numbers and letters' type='danger'/>
           <div class="form-group">
             <label>Owner</label>
             <input type="text" v-model="activity.owner_id" class="form-control" />
@@ -59,7 +60,21 @@ export default {
         account_id: "",
         activity_type: ""
       },
+      error:false
     };
+  },
+  components:{
+    alert
+  },
+  computed:{
+    isEmpty : function (){
+      const input = this.activity
+      if(input.title && input.status && input.owner_id && input.activity_type)
+      return true;
+      else{
+        return false;
+      }
+    }
   },
   filters: {},
   methods: {
@@ -79,7 +94,13 @@ export default {
       }
     },
     validateForm(){
-      return true;
+      const alphaNumeric = new RegExp('/[^A-Za-z0-9]/') 
+      let titleResult = alphaNumeric.test(this.activity.title)
+      if(titleResult && !this.isEmpty)
+      this.createActivity();
+      else{
+        this.error = true;
+      }
     }
   },
   mounted() {
