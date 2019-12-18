@@ -11,7 +11,7 @@
             <label>Title</label>
             <input type="text" v-model="activity.title" class="form-control" />
           </div>
-          <alert v-if="error" msg='you can only use numbers and letters' type='danger'/>
+          <alert v-if="error" :msg='msg' type='danger'/>
           <div class="form-group">
             <label>Owner</label>
             <input type="text" v-model="activity.owner_id" class="form-control" />
@@ -60,7 +60,8 @@ export default {
         account_id: "",
         activity_type: ""
       },
-      error:false
+      error:false,
+      msg:'you have an error'
     };
   },
   components:{
@@ -69,11 +70,14 @@ export default {
   computed:{
     isEmpty : function (){
       const input = this.activity
-      if(input.title && input.status && input.owner_id && input.activity_type)
-      return true;
+      if(input.title && input.status && input.owner_id && input.activity_type){
+      return true}
       else{
         return false;
       }
+    },
+    errorMesage: function(){
+      return true
     }
   },
   filters: {},
