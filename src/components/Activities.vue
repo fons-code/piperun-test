@@ -120,9 +120,12 @@ export default {
     },
 
     deleteActivities(activity_id) {
-      ActivitiesService.delete(activity_id).then(() => {
+      if(confirm('are you sure you want to delete this activity?'))
+      {
+        ActivitiesService.delete(activity_id).then(() => {
         this.listActivities();
       });
+      }
     },
 
     updateActivity(activity_id) {

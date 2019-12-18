@@ -42,10 +42,12 @@ export default {
 }
 .sidebar {
   grid-area: sidebar;
+  position: fixed;
 }
 .content {
   grid-area: content;
   padding: 45px;
   background-color: #f3f3f4;
+  overflow: scroll;
 }
 </style>

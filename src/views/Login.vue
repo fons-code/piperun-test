@@ -29,11 +29,18 @@
               required
             />
           </div>
+          <alert
+            v-if="error"
+            msg="complete all the fields to login"
+            type="danger"
+          />
           <button
             class="btn btn-lg btn-primary btn-block"
             type="submit"
             @click.prevent.stop="authentication()"
-          >Enter</button>
+          >
+            Enter
+          </button>
         </form>
       </div>
       <div class="col-sm"></div>
@@ -43,29 +50,42 @@
 
 <script>
 import Authentication from "@/services/Authentication";
-
+import alert from "@/components/alert";
 export default {
   name: "Login",
+  components: {
+    alert
+  },
   data() {
     return {
       email: "",
       password: "",
-      token: ""
+      token: "",
+      error: false
     };
   },
   filters: {},
   methods: {
     async authentication() {
-      if (this.email != " " && this.password != " ") {
-       Authentication.login(this.email, this.password);
-        if (localStorage.token) 
-        {this.$router.push({ name: "Home" });
-        this.$emit('auth-success')}
+      this.validate();
+      if (!this.error) {
+        try {
+          if (this.email != " " && this.password != " ") {
+            Authentication.login(this.email, this.password);
+            if (localStorage.token) {
+              this.$router.push({ name: "Home" }, () => {});
+              this.$emit("auth-success");
+            }
+          }
+        }catch(error){
+          console.log(error)
+        }
       }
+    },
+    validate() {
+      if (this.email == "" || this.password == "") this.error = true;
     }
   }
 };
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <form v-on:submit="validateForm">
+        <form v-on:submit="createActivity">
           <h4 v-if="!$route.params.id" class="text-center mb-3">Create</h4>
           <h4 v-else class="text-center mb-3">Edit</h4>
 
@@ -11,25 +11,68 @@
             <label>Title</label>
             <input type="text" v-model="activity.title" class="form-control" />
           </div>
-          <alert v-if="error" :msg='msg' type='danger'/>
+          <alert
+            v-if="errorHandler.titleError"
+            msg="you only can use alphanumeric on title field"
+            type="danger"
+          />
           <div class="form-group">
             <label>Owner</label>
-            <input type="text" v-model="activity.owner_id" class="form-control" />
+            <input
+              type="text"
+              v-model="activity.owner_id"
+              class="form-control"
+            />
           </div>
+          <alert
+            v-if="errorHandler.ownerError"
+            msg="you only can use numbers on type owner"
+            type="danger"
+          />
           <div class="form-group">
             <label>Type</label>
-            <input type="number" v-model="activity.activity_type" class="form-control" />
+            <input
+              type="number"
+              v-model="activity.activity_type"
+              class="form-control"
+            />
           </div>
+          <alert
+            v-if="errorHandler.typeError"
+            msg="you only can use numbers on type field"
+            type="danger"
+          />
           <div class="form-group">
             <label>Status</label>
-            <input type="number" v-model="activity.status" class="form-control" />
+            <input
+              type="number"
+              v-model="activity.status"
+              class="form-control"
+            />
           </div>
+          <alert
+            v-if="errorHandler.statusError"
+            msg="you only can use numbers on status field"
+            type="danger"
+          />
+          <alert
+            v-if="errorHandler.emptySpaces"
+            msg="You need to complete all the fields"
+            type="danger"
+          />
+           <alert
+            v-if="errorHandler.requestError"
+            msg="there's a problem, please try later"
+            type="danger"
+          />
           <div class="form-group">
             <div class="btn-group float-right">
               <button class="btn btn-secundary mr-3" type="button">
                 <router-link to="/home">Back</router-link>
               </button>
-              <button class="btn btn-primary float-right" type="submit">Create</button>
+              <button class="btn btn-primary float-right" type="submit">
+                Submit
+              </button>
             </div>
           </div>
         </form>
@@ -41,8 +84,9 @@
 </template>
 
 <script>
+//import validation from '@/services/validationForm';
 import ActivitiesService from "../services/ActivitiesService";
-import alert from '@/components/alert';
+import alert from "@/components/alert";
 export default {
   props: {
     id: {
@@ -57,54 +101,86 @@ export default {
         title: "",
         status: "",
         owner_id: "",
-        account_id: "",
+        account_id: "1",
         activity_type: ""
       },
-      error:false,
-      msg:'you have an error'
+      errorHandler: {
+        emptySpaces: false,
+        titleError: false,
+        ownerError: false,
+        typeError: false,
+        statusError: false,
+        requestError:false
+      }
     };
   },
-  components:{
+  components: {
     alert
-  },
-  computed:{
-    isEmpty : function (){
-      const input = this.activity
-      if(input.title && input.status && input.owner_id && input.activity_type){
-      return true}
-      else{
-        return false;
-      }
-    },
-    errorMesage: function(){
-      return true
-    }
   },
   filters: {},
   methods: {
     createActivity() {
-      if (!this.$route.params.id) {
+      this.validateForm();
+      if (
+        !this.errorHandler.emptySpaces &&
+        !this.errorHandler.titleError &&
+        !this.errorHandler.ownerError &&
+        !this.errorHandler.typeError &&
+        !this.errorHandler.statusError
+      ) {
+        try {
+          if (!this.$route.params.id) {
           ActivitiesService.create(this.activity).then(() => {
-          this.$router.push({ name: "/home" });
-        })
-        
-      } else {
-        ActivitiesService.updateActivity(
-          this.$route.params.id,
-          this.activity
-        ).then(() => {
-          this.$router.push({ name: "/home" });
-        });
-      }
+            this.$router.push({ name: "/home" });
+          }).catch(err => console.log(err));
+        } else {
+          ActivitiesService.updateActivity(
+            this.$route.params.id,
+            this.activity
+          ).then(() => {
+            this.$router.push({ name: "/home" });
+          })
+        }
+        } catch (error) {
+          this.errorHandler.requestError = true
+          console.log(error)
+        }}
     },
-    validateForm(){
-      const alphaNumeric = new RegExp('/[^A-Za-z0-9]/') 
-      let titleResult = alphaNumeric.test(this.activity.title)
-      if(titleResult && !this.isEmpty)
-      this.createActivity();
-      else{
-        this.error = true;
+    validateForm() {
+      if (
+        this.activity.title == "" ||
+        this.activity.owner_id == "" ||
+        this.activity.status == "" ||
+        this.activity.type == ""
+      ) {
+        this.errorHandler.emptySpaces = true;
       }
+      const alphaNumeric = new RegExp(/[^A-Za-z0-9]/);
+      const numeric = new RegExp(/^[0-9]/);
+      if (alphaNumeric.test(this.activity.title)) {
+        this.errorHandler.titleError = true;
+      }
+      if (!numeric.test(this.activity.status)) {
+        this.errorHandler.statusError = true;
+      }
+
+      if (!numeric.test(this.activity.owner_id)) {
+        this.errorHandler.ownerError = true;
+      }
+
+      if (!numeric.test(this.activity.type)) {
+        this.errorHandler.typeError = true;
+      }
+
+      // this.errorHandler.emptySpaces = (validation.isEmpty(this.title) ||
+      //                 validation.isEmpty(this.owner_id) ||
+      //                 validation.isEmpty(this.status) ||
+      //                 validation.isEmpty(this.type))
+      //                 ? true : false
+      // this.errorHandler.titleError = (validation.isAlphaNum(this.title)) ? true : false
+      // this.errorHandler.ownerError = (validation.isOnlyNum(this.owner_id)) ? true : false
+      // this.errorHandler.typeError = (validation.isOnlyNum(this.type)) ? true : false
+      // this.errorHandler.statusError = (validation.isOnlyNum(this.status)) ? true : false
     }
   },
   mounted() {
@@ -122,5 +198,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
