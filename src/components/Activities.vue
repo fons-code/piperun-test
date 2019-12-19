@@ -25,7 +25,7 @@
         <th>Actions</th>
       </thead>
       <tbody>
-        <tr v-for="item in filterActivities" v-bind:key="item.id">
+        <tr v-for="item in filterByPage" v-bind:key="item.id">
           <td>{{ item.title }}</td>
           <td>{{ item.status }}</td>
           <td>
@@ -69,7 +69,16 @@
         </tr>
       </tbody>
     </table>
-    <div v-if="filterActivities.length==0">You dont have activities</div>
+    <div v-if="pagesNumber > 1">
+      <p>Current page: {{ currentPage }}</p>
+      <v-pagination
+        v-model="currentPage"
+        :page-count="pagesNumber"
+      ></v-pagination>
+    </div>
+    <div v-if="filterActivities.length == 0 && isLoaded">
+      You dont have activities
+    </div>
   </div>
 </template>
 
@@ -77,10 +86,12 @@
 import ActivitiesService from "../services/ActivitiesService";
 import moment from "moment";
 import DatePicker from "vue2-datepicker";
+import vPagination from "vue-plain-pagination";
 
 export default {
   components: {
-    DatePicker
+    DatePicker,
+    vPagination
   },
   name: "Activities",
   data() {
@@ -89,7 +100,9 @@ export default {
       date: "",
       range: "",
       lang: {},
-      datesFilter:''
+      datesFilter: "",
+      currentPage: 1,
+      isLoaded: false
     };
   },
   filters: {
@@ -109,6 +122,23 @@ export default {
           );
         });
       }
+    },
+    filterByPage() {
+      if (this.activitiesList.length >=20) {
+        if (this.currentPage > 1) {
+          return this.filterActivities.slice(
+            10 * this.currentPage,
+            (19 + 10*this.currentPage)
+              ? 20 * this.currentPage
+              : this.filterActivities.length - 1
+          );
+        } else {
+          return this.filterActivities.slice(0, 19);
+        }
+      } else return this.filterActivities;
+    },
+    pagesNumber() {
+      return Math.ceil(this.activitiesList.length / 20);
     }
   },
 
@@ -120,6 +150,7 @@ export default {
     listActivities() {
       ActivitiesService.get(null).then(res => {
         this.activitiesList = res.data.data;
+        this.isLoaded = true;
       });
     },
 
@@ -143,11 +174,11 @@ export default {
         activity_id,
         this.formatDate(new Date())
       );
-      alert("Activity concluded")
+      alert("Activity concluded");
     },
     formatDate: function(value) {
       if (value) {
-        return moment(String(value),"YYYY-MM-DDTHH:mm:ss-03:00");
+        return moment(String(value), "YYYY-MM-DDTHH:mm:ss-03:00");
       }
     }
   },
