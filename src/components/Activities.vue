@@ -79,6 +79,12 @@
     <div v-if="filterActivities.length == 0 && isLoaded">
       You dont have activities
     </div>
+    <div v-if="!isLoaded">
+      Loading...
+    </div>
+    <div v-if="error">
+      there's a problem, please check your connection :C
+    </div>
   </div>
 </template>
 
@@ -102,7 +108,8 @@ export default {
       lang: {},
       datesFilter: "",
       currentPage: 1,
-      isLoaded: false
+      isLoaded: false,
+      error:false
     };
   },
   filters: {
@@ -148,10 +155,14 @@ export default {
     },
 
     listActivities() {
-      ActivitiesService.get(null).then(res => {
+      try{
+        ActivitiesService.get(null).then(res => {
         this.activitiesList = res.data.data;
         this.isLoaded = true;
       });
+      }catch{
+        this.error = true;
+      }
     },
 
     deleteActivities(activity_id) {
