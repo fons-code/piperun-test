@@ -69,6 +69,7 @@
         </tr>
       </tbody>
     </table>
+    <div v-if="filterActivities.length==0">You dont have activities</div>
   </div>
 </template>
 
@@ -87,7 +88,8 @@ export default {
       activitiesList: [],
       date: "",
       range: "",
-      lang: {}
+      lang: {},
+      datesFilter:''
     };
   },
   filters: {
