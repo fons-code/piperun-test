@@ -84,6 +84,9 @@ export default {
     },
     validate() {
       if (this.email == "" || this.password == "") this.error = true;
+      else{
+        this.error = false;
+      }
     }
   }
 };

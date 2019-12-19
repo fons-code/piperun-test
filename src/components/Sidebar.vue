@@ -15,7 +15,7 @@
       <li><router-link to="/dashboard">Dashboard</router-link></li>
       <li>
         <button class="btn btn-secundary mt-3" v-on:click="logout">
-          Logout
+          <span class="btn btn-secondary">Logout</span>
         </button>
       </li>
     </ul>

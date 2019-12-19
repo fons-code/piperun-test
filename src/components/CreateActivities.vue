@@ -60,7 +60,7 @@
             msg="You need to complete all the fields"
             type="danger"
           />
-           <alert
+          <alert
             v-if="errorHandler.requestError"
             msg="there's a problem, please try later"
             type="danger"
@@ -101,8 +101,10 @@ export default {
         title: "",
         status: "",
         owner_id: "",
-        account_id: "1",
-        activity_type: ""
+        account_id: 0,
+        activity_type: "",
+        // parameters required for API:
+        priority: 0
       },
       errorHandler: {
         emptySpaces: false,
@@ -110,7 +112,7 @@ export default {
         ownerError: false,
         typeError: false,
         statusError: false,
-        requestError:false
+        requestError: false
       }
     };
   },
@@ -130,21 +132,26 @@ export default {
       ) {
         try {
           if (!this.$route.params.id) {
-          ActivitiesService.create(this.activity).then(() => {
-            this.$router.push({ name: "/home" });
-          }).catch(err => console.log(err));
-        } else {
-          ActivitiesService.updateActivity(
-            this.$route.params.id,
-            this.activity
-          ).then(() => {
-            this.$router.push({ name: "/home" });
-          })
-        }
+            ActivitiesService.create(this.activity)
+              .then(() => {
+                alert('new activity created')
+                this.$router.push({ name: "/home" });
+              })
+              .catch(err => console.log(err));
+          } else {
+            ActivitiesService.updateActivity(
+              this.$route.params.id,
+              this.activity
+            ).then(() => {
+              alert('activity updated')
+              this.$router.push({ name: "/home" });
+            });
+          }
         } catch (error) {
-          this.errorHandler.requestError = true
-          console.log(error)
-        }}
+          this.errorHandler.requestError = true;
+          console.log(error);
+        }
+      }
     },
     validateForm() {
       if (

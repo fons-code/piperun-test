@@ -9,7 +9,6 @@
       Add
     </button>
     <date-picker
-      @confirm="findByDates"
       v-model="range"
       lang="en-us"
       range
@@ -26,11 +25,11 @@
         <th>Actions</th>
       </thead>
       <tbody>
-        <tr v-for="item in activitiesList" v-bind:key="item.id">
+        <tr v-for="item in filterActivities" v-bind:key="item.id">
           <td>{{ item.title }}</td>
           <td>{{ item.status }}</td>
           <td>
-            <span>{{ item.end_at | datesFilter }}</span>
+            <span>{{ item.end_at || datesFilter }}</span>
           </td>
           <td>
             <button
@@ -93,7 +92,19 @@ export default {
   },
   filters: {
     datesFilter(date) {
-      return moment(String(date)).format("YYYY-MM-DD HH:mm:ss");
+      return moment(String(date),'YYYY-MM-DD');
+    }
+  },
+  computed:{
+    filterActivities(){
+      if(this.range == ''){
+        return this.activitiesList
+      }else{
+        return this.activitiesList.filter(a => {
+          return new Date(a.created_at).getTime() >= this.range[0].getTime() &&
+                 new Date(a.created_at).getTime() <= this.range[1].getTime()   
+        })
+      }
     }
   },
 
@@ -105,19 +116,9 @@ export default {
     listActivities() {
       ActivitiesService.get(null).then(res => {
         this.activitiesList = res.data.data;
-        console.log(this.activitiesList);
       });
     },
 
-    findByDates() {
-      if (this.range.length > 0) {
-        var params = {
-          internal_date_start: this.formatDate(this.range[0]),
-          internal_date_end: this.formatDate(this.range[1])
-        };
-      }
-      ActivitiesService.get(params);
-    },
 
     deleteActivities(activity_id) {
       if(confirm('are you sure you want to delete this activity?'))
@@ -141,12 +142,6 @@ export default {
         this.formatDate(new Date())
       );
       this.listActivities();
-    },
-
-    formatDate: function(value) {
-      if (value) {
-        return moment(String(value)).format("YYYY-MM-DDTHH:mm:ss-03:00");
-      }
     }
   },
 
