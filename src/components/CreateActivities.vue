@@ -62,7 +62,7 @@
           />
           <alert
             v-if="errorHandler.requestError"
-            msg="there's a problem, please try later"
+            msg="there's a problem, please make sure your info its correct"
             type="danger"
           />
           <div class="form-group">
@@ -137,7 +137,7 @@ export default {
                 alert('new activity created')
                 this.$router.push({ name: "/home" });
               })
-              .catch(err => console.log(err));
+              .catch(() => this.errorHandler.requestError = true);
           } else {
             ActivitiesService.updateActivity(
               this.$route.params.id,
@@ -145,7 +145,7 @@ export default {
             ).then(() => {
               alert('activity updated')
               this.$router.push({ name: "/home" });
-            });
+            }).catch(() => this.errorHandler.requestError = true);
           }
         } catch (error) {
           this.errorHandler.requestError = true;

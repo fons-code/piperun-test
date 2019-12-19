@@ -92,18 +92,20 @@ export default {
   },
   filters: {
     datesFilter(date) {
-      return moment(String(date),'YYYY-MM-DD');
+      return moment(String(date), "YYYY-MM-DD");
     }
   },
-  computed:{
-    filterActivities(){
-      if(this.range == ''){
-        return this.activitiesList
-      }else{
+  computed: {
+    filterActivities() {
+      if (this.range == "") {
+        return this.activitiesList;
+      } else {
         return this.activitiesList.filter(a => {
-          return new Date(a.created_at).getTime() >= this.range[0].getTime() &&
-                 new Date(a.created_at).getTime() <= this.range[1].getTime()   
-        })
+          return (
+            new Date(a.created_at).getTime() >= this.range[0].getTime() &&
+            new Date(a.created_at).getTime() <= this.range[1].getTime()
+          );
+        });
       }
     }
   },
@@ -119,13 +121,11 @@ export default {
       });
     },
 
-
     deleteActivities(activity_id) {
-      if(confirm('are you sure you want to delete this activity?'))
-      {
+      if (confirm("are you sure you want to delete this activity?")) {
         ActivitiesService.delete(activity_id).then(() => {
-        this.listActivities();
-      });
+          this.listActivities();
+        });
       }
     },
 
@@ -141,7 +141,12 @@ export default {
         activity_id,
         this.formatDate(new Date())
       );
-      this.listActivities();
+      alert("Activity concluded")
+    },
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value),"YYYY-MM-DDTHH:mm:ss-03:00");
+      }
     }
   },
 

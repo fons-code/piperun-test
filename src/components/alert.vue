@@ -7,7 +7,7 @@ export default {
   props:{msg:String,type:String},
   data(){
       return{
-          alertType: 'alert-'+this.type
+          alertType: 'alert-'+this.type,
       }
   }
 };
