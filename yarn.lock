@@ -7935,6 +7935,13 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-plain-pagination@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/vue-plain-pagination/-/vue-plain-pagination-0.3.0.tgz#f2f03550d2090508f9f6e18fba41930b25464c1e"
+  integrity sha512-zyzmRdrnG0qYCy31CqZ+TN+6WQAQSoGjvb/UZqtR69IG/4wAaU2r9UJjOTahnKcYdyuAz3WYcTRQxPFH2R7imQ==
+  dependencies:
+    vue "^2.5.17"
+
 vue-router@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.1.1.tgz#0893c29548ba2dbe35ed104dcd1aa06743aa0ead"
@@ -7967,6 +7974,11 @@ vue2-datepicker@^2.12.0:
   integrity sha512-09PRIFm5hWrpfSBxWKJqm78yC0MTUZlq9MItLsWDe1OPgRqwWpex4fGkL7/nJG+d39v60wckQoVdk9RpLx8C9w==
   dependencies:
     fecha "^2.3.3"
+
+vue@^2.5.17:
+  version "2.6.13"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.13.tgz#94b2c1b31fddf1dfcc34f28ec848ba8f01ea4c5b"
+  integrity sha512-O+pAdJkce1ooYS1XyoQtpBQr9An+Oys3w39rkqxukVO3ZD1ilYJkWBGoRuadiQEm2LLJnCL2utV4TMSf52ubjw==
 
 vue@^2.6.10:
   version "2.6.10"
@@ -8205,9 +8217,9 @@ write@^0.2.1:
     mkdirp "^0.5.1"
 
 ws@^6.0.0:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
-  integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.2.tgz#dd5cdbd57a9979916097652d78f1cc5faea0c32e"
+  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
 
